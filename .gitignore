@@ -20,3 +20,5 @@
 
 # AWS Credentials
 config/initializers/secrets.rb
+
+public/system/play/full_text/*
