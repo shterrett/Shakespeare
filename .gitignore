@@ -22,5 +22,5 @@
 config/initializers/secrets.rb
 
 # test uploaded full text
-public/system/plays/full_text/*
+public/system/plays/full_texts/*
 system/plays/full_texts/*
