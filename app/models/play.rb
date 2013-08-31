@@ -24,13 +24,26 @@ class Play < ActiveRecord::Base
     self.role_map[speaker] || self.roles.new({ name: speaker, unique_name: "#{self.title} #{speaker}" })
   end
 
+  def set_line_count(xml)
+    self.line_count = xml.xpath("//LINE").count
+  end
+
+  def set_scene_count(xml)
+    self.scene_count = xml.xpath("//SCENE").count
+  end
+
+  def set_play_attributes(xml)
+    self.set_line_count(xml)
+    self.set_scene_count(xml)
+    self.set_title(xml)
+  end
 
   private 
 
   def parse_play
     file = File.open(self.full_text.url(nil, false))
     xml = Nokogiri::XML(file)
-    self.set_title(xml)
+    self.set_play_attributes(xml)
     speeches = extract_speeches(xml)
     speeches.each do |speech|
       speakers = speech.speaker

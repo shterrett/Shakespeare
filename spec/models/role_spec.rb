@@ -6,7 +6,9 @@ describe Role do
 
     let(:role) do
       role = Role.new
-      role.scene_list = ["Scene 1", "Scene 2", "Scene 3"]
+      ["Scene 1", "Scene 2", "Scene 3"].each do |scene|
+        role.add_scene scene
+      end
       role
     end
     
@@ -15,7 +17,7 @@ describe Role do
     end
 
     it "should return a count of scenes" do
-      role.num_scenes.should == 3
+      role.scene_count.should == 3
     end
 
     it "should add a scene to the list" do
@@ -30,6 +32,14 @@ describe Role do
       role.add_scene("scene test")
       role.add_scene("scene test")
       role.scene_list.count.should == 1
+    end
+
+    it "should set scene_count to scene_list.count on save in case they are out of sync" do
+      role.scene_list << "Scene 4"
+      role.scene_count.should == role.scene_list.count - 1
+      role.save
+      role.reload
+      role.scene_count.should == role.scene_list.count
     end
 
   end
@@ -48,6 +58,14 @@ describe Role do
       role = Role.new({ max_speech_length: 10, line_count: 5 })
       role.line_count.should == 5
       role.max_speech_length.should == 10
+    end
+
+    it "should initialize scene count to 0" do
+      Role.new.scene_count.should == 0
+    end
+
+    it "should initialize percent_scenes to 0" do
+      Role.new.percent_scenes.should == 0
     end
 
   end
@@ -86,6 +104,21 @@ Of your profession? Speak, what trade art thou?"""
       role.scene_list.should == [speech.scene]
     end
 
+  end
+
+  describe "calculating percent scenes" do
+
+    let(:play) { FactoryGirl.create(:play_no_callback) }
+    let(:role) do
+      role = FactoryGirl.create(:random_role)
+      play.roles << role 
+      role.save
+      role.reload
+    end
+
+    it "should set percent_scenes to self.scene_count / play.scene_count (x100 for percent) before save" do
+      role.percent_scenes.should == role.scene_count.to_f / play.scene_count.to_f * 100
+    end
 
   end
 

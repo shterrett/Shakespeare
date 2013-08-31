@@ -4,11 +4,8 @@ class Role < ActiveRecord::Base
 
   serialize :scene_list, Array
   after_initialize :set_defaults
-
-
-  def num_scenes
-    self.scene_list.count
-  end
+  before_save :sync_scene_count
+  before_save :set_percent_scenes
 
   def set_max_speech(speech)
     if speech.line_count > self.max_speech_length
@@ -18,7 +15,10 @@ class Role < ActiveRecord::Base
   end
 
   def add_scene(scene)
-    self.scene_list << scene unless self.scene_list.include? scene
+    unless self.scene_list.include? scene
+      self.scene_list << scene 
+      self.scene_count += 1
+    end
   end
 
   def assign_attributes_from_speech(speech)
@@ -27,12 +27,28 @@ class Role < ActiveRecord::Base
     self.set_max_speech(speech)
   end
 
+  def percent_scenes
+    read_attribute(:percent_scenes) ? read_attribute(:percent_scenes) * 100 : 0
+  end
+
   private 
+
+  def sync_scene_count
+    self.scene_count = self.scene_list.count
+  end
+
+  def set_percent_scenes
+    if self.play
+      write_attribute(:percent_scenes, (self.scene_count.to_f / self.play.scene_count.to_f)) 
+    end
+  end
 
   def set_defaults
     self.max_speech_length ||= 0
     self.line_count ||= 0
     self.scene_list ||= []
+    self.scene_count ||= 0
+    self.percent_scenes ||= 0
   end
 
 end

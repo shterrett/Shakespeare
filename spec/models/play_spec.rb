@@ -103,6 +103,14 @@ describe Play do
       play
     end
 
+    it "should set the number of lines" do
+      play.line_count.should == 5
+    end
+
+    it "should set the number of scenes" do
+      play.scene_count.should == 1
+    end
+
     it "should set the play title" do
       play.title.should == "The Tragedy of Julius Caesar"
     end
