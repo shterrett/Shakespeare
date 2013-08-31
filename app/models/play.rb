@@ -3,8 +3,8 @@ class Play < ActiveRecord::Base
   has_many :roles
   has_attached_file :full_text
 
-  validates_attachment :full_text, :presence => true,
-      :content_type => { :content_type => "application/xml" }
+  validates_attachment :full_text, :presence => true #,
+      # :content_type => { content_type: [ "application/xml", "text/xml" ] }
 
   after_create :parse_play
 
@@ -28,10 +28,11 @@ class Play < ActiveRecord::Base
   private 
 
   def parse_play
-    xml = Nokogiri::XML(File.open(self.full_text.url))
-    set_name(xml)
+    file = File.open(self.full_text.url(nil, false))
+    xml = Nokogiri::XML(file)
+    self.set_title(xml)
     speeches = extract_speeches(xml)
-    speeches.each do |xml_speech|
+    speeches.each do |speech|
       speakers = speech.speaker
       speakers.each do |speaker|
         role = get_role(speaker) 

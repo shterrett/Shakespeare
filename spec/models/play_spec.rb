@@ -42,6 +42,7 @@ describe Play do
     end
 
     it "should not be valid if attachment is not xml" do
+      pending
       invalid_play.should_not be_valid
     end
 
@@ -84,6 +85,30 @@ describe Play do
         play.roles.should include role
       end
 
+    end
+
+  end
+
+  describe "parsing play on create" do
+    class FakeFile
+      def url(param, param2)
+        "spec/fixtures/one_speech.xml"
+      end
+    end
+
+    let(:play) do
+      play =  FactoryGirl.build(:live_play_one) 
+      play.full_text.stub(:url) { "spec/fixtures/one_speech.xml" }
+      play.save
+      play
+    end
+
+    it "should set the play title" do
+      play.title.should == "The Tragedy of Julius Caesar"
+    end
+
+    it "should add the role model to it's has_many" do
+      play.roles.count.should == 1
     end
 
   end
