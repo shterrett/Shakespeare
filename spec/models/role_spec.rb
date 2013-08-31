@@ -19,8 +19,17 @@ describe Role do
     end
 
     it "should add a scene to the list" do
-      role.scene_list << "scene test" 
+      role.add_scene("scene test")
+      role.save
+      role.reload
       role.scene_list.should include "scene test"
+    end
+
+    it "should not add a scene to the list if it is not unique" do
+      role.scene_list = []
+      role.add_scene("scene test")
+      role.add_scene("scene test")
+      role.scene_list.count.should == 1
     end
 
   end
@@ -68,6 +77,15 @@ Of your profession? Speak, what trade art thou?"""
       role.max_speech_length.should == 100
       role.max_speech_text.should == "test"
     end
+
+    it "should change line_count, scene_list, and max_speech with speech" do
+      role.assign_attributes_from_speech(speech)
+      role.line_count.should == speech.line_count
+      role.max_speech_length.should == speech.line_count
+      role.max_speech_text.should == speech.text
+      role.scene_list.should == [speech.scene]
+    end
+
 
   end
 

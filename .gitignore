@@ -21,4 +21,6 @@
 # AWS Credentials
 config/initializers/secrets.rb
 
-public/system/play/full_text/*
+# test uploaded full text
+public/system/plays/full_text/*
+system/plays/full_texts/*

@@ -1,5 +1,7 @@
 class Role < ActiveRecord::Base
 
+  belongs_to :play
+
   serialize :scene_list, Array
   after_initialize :set_defaults
 
@@ -15,12 +17,22 @@ class Role < ActiveRecord::Base
     end
   end
 
+  def add_scene(scene)
+    self.scene_list << scene unless self.scene_list.include? scene
+  end
+
+  def assign_attributes_from_speech(speech)
+    self.line_count += speech.line_count
+    self.add_scene(speech.scene)
+    self.set_max_speech(speech)
+  end
+
   private 
 
   def set_defaults
     self.max_speech_length ||= 0
     self.line_count ||= 0
-    write_attribute(:scene_list, "") 
+    self.scene_list ||= []
   end
 
 end

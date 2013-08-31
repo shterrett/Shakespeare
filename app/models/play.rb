@@ -4,7 +4,7 @@ class Play < ActiveRecord::Base
   has_attached_file :full_text
 
   validates_attachment :full_text, :presence => true,
-      :content_type => { :content_type => "text/xml" }
+      :content_type => { :content_type => "application/xml" }
 
   after_create :parse_play
 
@@ -17,11 +17,11 @@ class Play < ActiveRecord::Base
   end
 
   def extract_speeches(xml)
-    xml.xpath("//SPEECH")
+    xml.xpath("//SPEECH").map { |speech| Speech.new(speech) }
   end
 
   def get_role(speaker)
-    self.role_map[speaker] || Role.new({ name: speaker, unique_name: "#{self.title} #{speaker}" })
+    self.role_map[speaker] || self.roles.new({ name: speaker, unique_name: "#{self.title} #{speaker}" })
   end
 
 
@@ -32,13 +32,10 @@ class Play < ActiveRecord::Base
     set_name(xml)
     speeches = extract_speeches(xml)
     speeches.each do |xml_speech|
-      speech = Speech.new(xml_speech)
       speakers = speech.speaker
       speakers.each do |speaker|
         role = get_role(speaker) 
-        role.line_count += speech.line_count
-        role.scene_list << speech.scene
-        role.set_max_speech(speech)
+        role.assign_attributes_from_speech(speech)
         self.role_map[speaker] = role
       end
     end

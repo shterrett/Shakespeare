@@ -49,7 +49,7 @@ describe Play do
 
   describe "play parsing" do
 
-    let(:play) { Play.new }
+    let(:play) { FactoryGirl.build(:play) }
     let(:xml) do
       xml = Nokogiri::XML(File.open("spec/fixtures/one_speech.xml"))
     end
@@ -60,16 +60,30 @@ describe Play do
     end
 
     it "should return an array of speeches" do
-      play.extract_speeches(xml).should == xml.xpath("//SPEECH")
+      speeches = play.extract_speeches(xml)
+      speeches.should be_an_instance_of Array
+      speeches[0].should be_an_instance_of Speech
+      speeches[0].speaker.should == ["FLAVIUS"]
     end
 
-    it "should return a role object from a speech" do
-      speaker = xml.xpath("//SPEECH")[0].xpath("SPEAKER").text
-      play.set_title(xml)
-      role = play.get_role(speaker)
-      role.should be_an_instance_of Role
-      role.name.should == speaker
-      role.unique_name.should == "The Tragedy of Julius Caesar FLAVIUS"
+    describe "creating roles" do
+
+      let(:speaker) { speaker = xml.xpath("//SPEECH")[0].xpath("SPEAKER").text }
+      let(:role) do
+        play.set_title(xml)
+        play.get_role(speaker)
+      end
+
+      it "should return a role object from a speech" do
+        role.should be_an_instance_of Role
+        role.name.should == speaker
+        role.unique_name.should == "The Tragedy of Julius Caesar FLAVIUS"
+      end
+
+      it "should return a role that belongs_to itself" do
+        play.roles.should include role
+      end
+
     end
 
   end
