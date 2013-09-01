@@ -29,14 +29,11 @@ gem 'jquery-rails'
 # Foundation
 gem 'zurb-foundation', '>= 4.0.0'
 
-# Backbone
-gem 'rails-backbone'
-
 # haml
 gem 'haml'
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks'
+# gem 'turbolinks'
 
 # Paperclip and AWS storage
 gem 'paperclip'
