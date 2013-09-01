@@ -122,4 +122,52 @@ Of your profession? Speak, what trade art thou?"""
 
   end
 
+  describe "sorting" do
+    
+    before(:all) do
+      Role.all.each { |role| role.destroy }
+      play = FactoryGirl.create(:play)
+      15.times do
+        play.roles << FactoryGirl.create(:random_role)
+      end
+    end
+
+    it "should return 10 results" do
+      Role.sort.count.should == 10
+    end
+
+    it "should default to descending line-count" do
+      roles = Role.sort
+      roles[0].line_count.should > roles[1].line_count
+    end
+
+    it "should sort by passed parameter, defaulting to descending" do
+      [:line_count, :max_speech_length, :scene_count, :percent_scenes].each do |atrb|
+        roles = Role.sort(atrb)
+        roles[0].send(atrb).should > roles[1].send(atrb)
+      end
+    end
+
+    it "should sort ascending" do
+      roles = Role.sort(:line_count, :asc)
+      roles[0].line_count.should < roles[1].line_count
+    end
+
+    it "should sort descending" do
+      roles = Role.sort(:line_count, :desc)
+      roles[0].line_count.should > roles[1].line_count
+    end
+
+    it "should default to descending if by parameter is nil" do
+      roles = Role.sort(:line_count, nil)
+      roles[0].line_count.should > roles[1].line_count
+    end
+
+    it "should default to line_count if key parameter is nil" do
+      roles = Role.sort(nil, :desc)
+      roles[0].line_count.should > roles[1].line_count
+    end
+
+  end
+
 end
