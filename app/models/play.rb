@@ -41,19 +41,20 @@ class Play < ActiveRecord::Base
     self.full_text.copy_to_local_file(nil, filename)
     xml = Nokogiri::XML(File.open(filename))
     self.set_play_attributes(xml)
+    self.save
     speeches = extract_speeches(xml)
     speeches.each do |speech|
       speakers = speech.speaker
       speakers.each do |speaker|
         role = get_role(speaker) 
         role.assign_attributes_from_speech(speech)
+        role.set_percent_scenes(self.scene_count)
         self.role_map[speaker] = role
       end
     end
    self.role_map.each do |key, value|
      value.save
    end
-   self.save
   end
 
 end

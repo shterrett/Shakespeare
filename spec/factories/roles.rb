@@ -18,6 +18,7 @@ Travel time to the nearest starbase? Maybe we better talk out here; the observat
 We have a saboteur aboard. Shields up! Rrrrred alert! I suggest you drop it, Mr. Data."""
       sequence(:line_count) { Random.rand(1..10000) }
       sequence(:scene_list) { |n| ["Scene 3"] * n }
+      sequence(:percent_scenes) { Random.rand(0..100) }
     end
 
   end

@@ -5,7 +5,6 @@ class Role < ActiveRecord::Base
   serialize :scene_list, Array
   after_initialize :set_defaults
   before_save :sync_scene_count
-  before_save :set_percent_scenes
 
   def self.sort(play_id, key = :line_count, by = :desc)
     key = :line_count unless key
@@ -33,20 +32,14 @@ class Role < ActiveRecord::Base
     self.set_max_speech(speech)
   end
 
-  def percent_scenes
-    read_attribute(:percent_scenes) ? read_attribute(:percent_scenes) * 100 : 0
+  def set_percent_scenes(play_scene_count)
+    self.percent_scenes = ( ( self.scene_count.to_f / play_scene_count.to_f ) * 100 ).ceil
   end
 
   private 
 
   def sync_scene_count
     self.scene_count = self.scene_list.count
-  end
-
-  def set_percent_scenes
-    if self.play 
-      write_attribute(:percent_scenes, (self.scene_count.to_f / self.play.scene_count.to_f)) 
-    end
   end
 
   def set_defaults

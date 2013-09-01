@@ -110,14 +110,19 @@ Of your profession? Speak, what trade art thou?"""
 
     let(:play) { FactoryGirl.create(:play_no_callback) }
     let(:role) do
-      role = FactoryGirl.create(:random_role)
+      role = FactoryGirl.build(:random_role)
       play.roles << role 
+      role.set_percent_scenes(play.scene_count)
       role.save
       role.reload
     end
 
     it "should set percent_scenes to self.scene_count / play.scene_count (x100 for percent) before save" do
-      role.percent_scenes.should == role.scene_count.to_f / play.scene_count.to_f * 100
+      role.percent_scenes.should == ( role.scene_count.to_f / play.scene_count.to_f * 100 )
+    end
+
+    it "should return percent_scenes as a whole number" do
+      role.percent_scenes.to_i.should == role.percent_scenes
     end
 
   end
