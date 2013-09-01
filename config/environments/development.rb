@@ -29,4 +29,6 @@ Shakespeare::Application.configure do
 
   # Prefer sass to scss
   config.sass.preferred_syntax = :sass
+
+
 end

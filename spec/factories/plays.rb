@@ -13,11 +13,11 @@ FactoryGirl.define do
     end
 
     factory :live_play_one do
-      full_text {fixture_file_upload("spec/fixtures/one_speech.xml") }
+      full_text {fixture_file_upload("spec/fixtures/one_speech.xml", 'application/xml') }
     end
 
     factory :play_no_callback do
-      after(:build) { |play| play.class.skip_callback(:create, :after, :parse_play) }
+      after(:build) { |play| play.class.skip_callback(:post_process, :after, :parse_play) }
     end
 
   end

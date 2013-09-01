@@ -6,8 +6,6 @@ class Play < ActiveRecord::Base
   validates_attachment :full_text, :presence => true #,
       # :content_type => { content_type: [ "application/xml", "text/xml" ] }
 
-  after_create :parse_play
-
   def role_map
     @role_map ||= {}
   end
@@ -38,11 +36,10 @@ class Play < ActiveRecord::Base
     self.set_title(xml)
   end
 
-  private 
-
   def parse_play
-    file = File.open(self.full_text.url(nil, false))
-    xml = Nokogiri::XML(file)
+    filename = "tmp/play-#{DateTime.now}.xml" 
+    self.full_text.copy_to_local_file(nil, filename)
+    xml = Nokogiri::XML(File.open(filename))
     self.set_play_attributes(xml)
     speeches = extract_speeches(xml)
     speeches.each do |speech|

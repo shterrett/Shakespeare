@@ -90,17 +90,10 @@ describe Play do
   end
 
   describe "parsing play on create" do
-    class FakeFile
-      def url(param, param2)
-        "spec/fixtures/one_speech.xml"
-      end
-    end
 
-    let(:play) do
-      play =  FactoryGirl.build(:live_play_one) 
-      play.full_text.stub(:url) { "spec/fixtures/one_speech.xml" }
-      play.save
-      play
+    let(:play) { FactoryGirl.create(:play) }
+    before(:all) do
+      play.parse_play 
     end
 
     it "should set the number of lines" do
