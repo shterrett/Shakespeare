@@ -2,7 +2,7 @@ class RolesController < ApplicationController
   respond_to :json
 
   def index
-    @roles = Role.sort(params[:key], params[:by])
+    @roles = Role.sort(params[:play_id], params[:key], params[:by])
     respond_with @roles
   end
 

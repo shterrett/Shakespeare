@@ -53,6 +53,7 @@ class Play < ActiveRecord::Base
    self.role_map.each do |key, value|
      value.save
    end
+   self.save
   end
 
 end

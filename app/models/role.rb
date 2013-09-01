@@ -7,10 +7,10 @@ class Role < ActiveRecord::Base
   before_save :sync_scene_count
   before_save :set_percent_scenes
 
-  def self.sort(key = :line_count, by = :desc)
+  def self.sort(play_id, key = :line_count, by = :desc)
     key = :line_count unless key
     by = :desc unless by
-    Role.order("#{key} #{by}").limit(10)
+    Role.where(play_id: play_id).order("#{key} #{by}").limit(10)
   end
 
   def set_max_speech(speech)
