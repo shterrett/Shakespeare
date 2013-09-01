@@ -1,21 +1,22 @@
-%header
-  %h1= @play.title
-  %span#play_id= @play.id
+%section.view-play
+  %header
+    %h1= @play.title
+    %span#play_id= @play.id
 
-%table
-  %thead
-    %tr
-      %th Character
-      %th{ class: "sortable", data: { key: "line_count" } }Line Count
-      %th{ class: "sortable", data: { key: "scene_count" } }Scene Count
-      %th{ class: "sortable", data: { key: "percent_scenes" } }Percentage of Total Scenes
-      %th{ class: "sortable", data: { key: "max_speech_length" } }Longest Speech
-  %tbody
-    - 10.times do |n|
-      %tr{ id: "character-#{n}" }
-        %td.character-name
-        %td.character-line-count
-        %td.character-scene-count
-        %td.character-scene-percent
-        %td.character-longest-speech
+  %table
+    %thead
+      %tr
+        %th Character
+        %th{ class: "sortable", data: { key: "line_count" } }Line Count
+        %th{ class: "sortable", data: { key: "scene_count" } }Scene Count
+        %th{ class: "sortable", data: { key: "percent_scenes" } }Percentage of Total Scenes
+        %th{ class: "sortable", data: { key: "max_speech_length" } }Longest Speech
+    %tbody
+      - 10.times do |n|
+        %tr{ id: "character-#{n}" }
+          %td.character-name
+          %td.character-line-count
+          %td.character-scene-count
+          %td.character-scene-percent
+          %td.character-longest-speech
 

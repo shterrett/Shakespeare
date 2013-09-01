@@ -4,3 +4,37 @@
 
 #play_id
   display: none
+
+section
+  width: 80%
+  margin: 0 auto
+  header
+    text-align: right
+    border-bottom: 2px solid black
+    margin-bottom: 1.5em 
+  &.all-plays
+    ul
+      text-align: center
+      list-style: none
+      margin-top: 10px
+  &.new-play
+    form
+      text-align: center
+      input[type="file"]
+        @media screen and (min-width: 600px)
+          width: 50%
+      .row
+        margin: 1.5em 0
+  &.view-play
+    .sortable
+      cursor: pointer
+    .character-longest-speech
+      p
+        margin: 0
+        line-height: 1em
+        cursor: pointer
+        &:nth-child(n+2)
+          display: none
+      &:hover
+        p
+          display: block

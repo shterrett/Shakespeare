@@ -1,15 +1,16 @@
-%header
-  %h1 New Play
+%section.new-play
+  %header
+    %h1 New Play
 
-= form_for @play do |f|
+  = form_for @play do |f|
 
-  %div.row
-    %div.large-3.columns
-      %label XML File
-    %div.large-6.columns
-      = f.file_field :full_text
-    %div.large-3.columns
+    %div.row
+      %div.large-6.large-centered.small-9.small-centered.columns
+        %label XML File
+    %div.row
+      %div.large-6.large-centered.small-9.small-centered.columns
+        = f.file_field :full_text
 
-  %div.row
-    %div.large-6.large-centered.small-6.small-centered.columns
-      = f.submit "Upload File"
+    %div.row
+      %div.large-6.large-centered.small-6.small-centered.columns
+        = f.submit "Upload File"

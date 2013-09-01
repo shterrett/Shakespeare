@@ -22,7 +22,7 @@ populate_table = (data) ->
     $(row_name + " .character-line-count").text(character.line_count)
     $(row_name + " .character-scene-percent").text(character.percent_scenes)
     $(row_name + " .character-scene-count").text(character.scene_count)
-    $(row_name + " .character-longest-speech").text(character.max_speech_text)
+    $(row_name + " .character-longest-speech").html("<p>" + character.max_speech_text.replace(/\n/g, "</p><p>") + "</p>")
   )
 
 $(document).ready ->

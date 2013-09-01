@@ -1,0 +1,19 @@
+%nav.top-bar
+  %ul.title-area
+    %li.name
+      %h1 
+        = link_to raw("Sh&#257;x(ml)peare"), root_path
+    %li.toggle-topbar
+      %a{ href: "#" }
+    %li.toggle-topbar.menu-icon
+      %a{ href: "#" }
+        %span
+  
+  %section.top-bar-section
+    %ul.right
+      %li
+        = link_to "Add Play", new_play_path
+      %li.divider
+      %li
+        = link_to "All Plays", plays_path
+      %li.divider

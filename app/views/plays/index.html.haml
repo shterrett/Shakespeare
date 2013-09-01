@@ -1,8 +1,9 @@
-%header
-  %h1 All Plays
+%section.all-plays
+  %header
+    %h1 All Plays
 
-%div.row
-  %div.large-6.large-centered.small-10.small-centered
-    %ul
-      - @plays.each do |play|
-        %li= link_to play.title, play
+  %div.row
+    %div.large-6.large-centered.small-10.small-centered.columns
+      %ul
+        - @plays.each do |play|
+          %li= link_to play.title, play
