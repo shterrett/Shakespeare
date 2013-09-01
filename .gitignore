@@ -19,7 +19,7 @@
 *.swp
 
 # AWS Credentials
-config/initializers/secrets.rb
+config/initializers/_secrets.rb
 
 # test uploaded full text
 public/system/plays/full_texts/*
