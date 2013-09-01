@@ -44,7 +44,7 @@ class Role < ActiveRecord::Base
   end
 
   def set_percent_scenes
-    if self.play
+    if self.play 
       write_attribute(:percent_scenes, (self.scene_count.to_f / self.play.scene_count.to_f)) 
     end
   end
