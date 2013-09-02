@@ -36,10 +36,14 @@ class Play < ActiveRecord::Base
     self.set_title(xml)
   end
 
+  def get_xml
+    uri = URI.parse(self.full_text.url(nil, false))
+    response = Net::HTTP.get_response(uri)
+    Nokogiri::XML(response.body)
+  end
+
   def parse_play
-    filename = "tmp/play-#{DateTime.now}.xml" 
-    self.full_text.copy_to_local_file(nil, filename)
-    xml = Nokogiri::XML(File.open(filename))
+    xml = get_xml
     self.set_play_attributes(xml)
     self.save
     speeches = extract_speeches(xml)
