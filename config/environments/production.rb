@@ -78,12 +78,4 @@ Shakespeare::Application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  config.paperclip_defaults = {
-      :storage => :s3,
-        :s3_credentials => {
-          :bucket => AwsCreds.bucket, 
-            :access_key_id => AwsCreds.access_key_id,
-                :secret_access_key => AwsCreds.secret_access_key 
-        }
-  }
 end
